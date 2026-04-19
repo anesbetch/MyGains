@@ -1,14 +1,8 @@
 {
-  "projects": [
-    {
-      "name": "my-gains",
-      "rootDirectory": "frontend",
-      "framework": "vite",
-      "settings": {
-        "buildCommand": "npm run build",
-        "outputDirectory": "dist",
-        "installCommand": "npm install"
-      }
+  "experimentalServices": {
+    "frontend": {
+      "entrypoint": "frontend",
+      "routePrefix": "/"
     }
-  ]
+  }
 }
