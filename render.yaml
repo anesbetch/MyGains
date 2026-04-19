@@ -1,0 +1,27 @@
+databases:
+  - name: fitstore-db
+    databaseName: fitstore
+    user: fitstore
+    plan: free
+
+services:
+  - type: web
+    name: fitstore-backend
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate
+    startCommand: gunicorn fitstore.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fitstore-db
+          property: connectionString
+      - key: DEBUG
+        value: "False"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: PYTHON_VERSION
+        value: "3.10.12"
