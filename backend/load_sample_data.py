@@ -6,6 +6,11 @@ django.setup()
 
 from products.models import Category, Product
 
+# Only seed if the database is empty (so re-deploys don't wipe real orders)
+if Product.objects.exists():
+    print("Products already exist — skipping seed.")
+    exit()
+
 # Clear existing data
 Product.objects.all().delete()
 Category.objects.all().delete()

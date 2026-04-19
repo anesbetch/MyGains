@@ -10,7 +10,7 @@ services:
     env: python
     plan: free
     rootDir: backend
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate && python load_sample_data.py
     startCommand: gunicorn fitstore.wsgi:application
     envVars:
       - key: DATABASE_URL
