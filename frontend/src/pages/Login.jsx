@@ -85,7 +85,11 @@ function Login({ setUser, refreshCartCount }) {
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: '20px', color: '#5a7a6e', fontSize: '0.9rem' }}>
+        <p style={{ textAlign: 'center', marginTop: '16px', color: '#5a7a6e', fontSize: '0.9rem' }}>
+          <Link to="/forgot-password" style={{ color: '#40916c', fontWeight: 600 }}>Forgot your password?</Link>
+        </p>
+
+        <p style={{ textAlign: 'center', marginTop: '12px', color: '#5a7a6e', fontSize: '0.9rem' }}>
           Don't have an account?{' '}
           <Link to="/signup" state={{ from: redirectTo }} style={{ color: '#40916c', fontWeight: 700 }}>Create one</Link>
         </p>

@@ -8,6 +8,8 @@ from cart.views import CartViewSet
 from orders.views import OrderViewSet
 from guidance.views import GuidanceViewSet
 from chat.views import ChatViewSet
+from reviews.views import ReviewViewSet
+from wishlist.views import WishlistViewSet
 
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet)
@@ -17,6 +19,8 @@ router.register(r'cart', CartViewSet, basename='cart')
 router.register(r'orders', OrderViewSet, basename='order')
 router.register(r'guidance', GuidanceViewSet, basename='guidance')
 router.register(r'chat', ChatViewSet, basename='chat')
+router.register(r'reviews', ReviewViewSet, basename='review')
+router.register(r'wishlist', WishlistViewSet, basename='wishlist')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

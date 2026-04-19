@@ -66,3 +66,39 @@ export const activateAccount = (token) => apiRequest('/users/activate/', {
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ token }),
 });
+
+// ── Password Reset ──────────────────────────────────────────────
+export const forgotPassword = (email) => apiRequest('/users/forgot_password/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email }),
+});
+export const resetPassword = (token, password) => apiRequest('/users/reset_password/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ token, password }),
+});
+
+// ── Reviews ─────────────────────────────────────────────────────
+export const getReviews = (productId) => apiRequest(`/reviews/get_reviews/?product_id=${productId}`);
+export const addReview = (productId, rating, comment, token) => apiRequest('/reviews/add_review/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+  body: JSON.stringify({ product_id: productId, rating, comment }),
+});
+export const getMyReview = (productId, token) => apiRequest(`/reviews/my_review/?product_id=${productId}`, {
+  headers: { Authorization: `Bearer ${token}` },
+});
+
+// ── Wishlist ─────────────────────────────────────────────────────
+export const getWishlist = (token) => apiRequest('/wishlist/get_wishlist/', {
+  headers: { Authorization: `Bearer ${token}` },
+});
+export const toggleWishlist = (productId, token) => apiRequest('/wishlist/toggle/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+  body: JSON.stringify({ product_id: productId }),
+});
+export const checkWishlist = (productId, token) => apiRequest(`/wishlist/check/?product_id=${productId}`, {
+  headers: { Authorization: `Bearer ${token}` },
+});

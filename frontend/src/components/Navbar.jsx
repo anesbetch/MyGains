@@ -33,6 +33,7 @@ function Navbar({ user, cartCount, onLogout }) {
         <Link to="/shop" onClick={close}>Shop</Link>
         <Link to="/guidance" onClick={close}>Guidance</Link>
         <Link to="/about" onClick={close}>About</Link>
+        <Link to="/wishlist" onClick={close}>🤍 Wishlist</Link>
         <Link to="/cart" className="nav-cart" onClick={close}>
           🛒 Cart {cartCount > 0 && <span style={{
             background: '#52b788',
