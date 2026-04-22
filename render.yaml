@@ -5,6 +5,7 @@ databases:
     plan: free
 
 services:
+  # ── BACKEND (Django) ─────────────────────────────────────────
   - type: web
     name: fitstore-backend
     env: python
@@ -22,6 +23,28 @@ services:
       - key: DJANGO_SECRET_KEY
         generateValue: true
       - key: ALLOWED_HOSTS
-        value: ".onrender.com"
+        value: ".onrender.com,.render.com"
       - key: PYTHON_VERSION
         value: "3.10.12"
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://fitstore-frontend.onrender.com"
+      - key: FRONTEND_URL
+        value: "https://fitstore-frontend.onrender.com"
+      - key: RESEND_API_KEY
+        value: ""
+
+  # ── FRONTEND (React/Vite static site) ───────────────────────
+  - type: web
+    name: fitstore-frontend
+    env: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE
+        value: "https://fitstore-backend.onrender.com/api"
