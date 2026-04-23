@@ -10,6 +10,41 @@ from .models import CustomUser, PasswordResetToken
 from .serializers import UserSerializer, UserRegisterSerializer, UserLoginSerializer
 
 
+def _send_email(to_email, subject, html):
+    api_key = os.getenv('RESEND_API_KEY', '')
+    if not api_key:
+        return
+    try:
+        http_requests.post(
+            'https://api.resend.com/emails',
+            headers={'Authorization': f'Bearer {api_key}', 'Content-Type': 'application/json'},
+            json={
+                'from': 'MyGains <noreply@mygains.it.com>',
+                'to': [to_email],
+                'subject': subject,
+                'html': html,
+            },
+            timeout=8,
+        )
+    except Exception:
+        pass
+
+
+def _send_welcome_email(to_email, first_name):
+    html = f'''
+    <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px;">
+      <h2 style="color:#1a3c34;">Welcome to MyGains, {first_name}! 💪</h2>
+      <p>Your account has been created successfully. You're now part of the MyGains community.</p>
+      <p>Start browsing our fitness products and reach your goals.</p>
+      <a href="https://mygains.it.com/shop" style="display:inline-block;background:#40916c;color:white;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:700;margin:16px 0;">
+        Start Shopping
+      </a>
+      <p style="color:#888;font-size:0.85rem;">MyGains — Your fitness journey starts here.</p>
+    </div>
+    '''
+    _send_email(to_email, 'Welcome to MyGains! 💪', html)
+
+
 def _send_reset_email(to_email, reset_url):
     api_key = os.getenv('RESEND_API_KEY', '')
     if not api_key:
@@ -19,7 +54,7 @@ def _send_reset_email(to_email, reset_url):
             'https://api.resend.com/emails',
             headers={'Authorization': f'Bearer {api_key}', 'Content-Type': 'application/json'},
             json={
-                'from': 'MyGains <onboarding@resend.dev>',
+                'from': 'MyGains <noreply@mygains.it.com>',
                 'to': [to_email],
                 'subject': 'Reset your MyGains password',
                 'html': f'''
@@ -67,6 +102,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
+            _send_welcome_email(user.email, user.first_name or user.email.split('@')[0])
             return Response({
                 'user': UserSerializer(user).data,
                 'refresh': str(refresh),
